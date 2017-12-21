@@ -1,8 +1,11 @@
 # listynetwork
 
 ## Running the tests
+In the root directory, type in:
+
 
 `bundle install`
+
 `bundle exec rpsec spec`
 
 ## Challenge Overview
