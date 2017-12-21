@@ -50,7 +50,7 @@ def search_trie(node, letter, word, previous_row, results, maxCost)
   end
 
   if current_row.last <= maxCost && !node.word.nil?
-    results << node.word
+    results << node.word unless $set.include?(node.word)
   end
 
   if current_row.min <= maxCost
@@ -67,55 +67,55 @@ end
 
 def findNetworkCount(target_word, dictionary_file)
   trie = build_trie(dictionary_file)
+  $set = Set.new
   queue = [target_word]
 
   count = 0
 
-  set = Set.new
-
   while !queue.empty?
     count += 1
     current_word = queue.shift()
-    unless (set.include?(current_word))
-      set.add(current_word)
+    unless $set.include?(current_word)
+      $set.add(current_word)
       res = search(trie, current_word, 1)
-      res.each do |word|
-        queue << word unless set.include?(word)
-      end
+      queue.concat(res)
     end
   end
+
   return count
 end
 
-# def dynamicEditDistance(str1, str2)
-#   matrix = Array.new(str1.length + 1) { Array.new(str2.length + 1) }
-#
-#   # Set up first row of matrix
-#   (0...matrix[0].length).each do |i|
-#     matrix[0][i] = i
-#   end
-#
-#   # Set up first column of matrix
-#   (0...matrix.length).each do |i|
-#     matrix[i][0] = i
-#   end
-#
-#   # Build the matrix
-#   (1..str1.length).each do |i|
-#     (1..str2.length).each do |j|
-#       # If the current letters are the same, we take the old value
-#       # since there is no edit distance. Otherwise, we take the minimum
-#       # of the three values of substituion, deletion, or insertion
-#       if str1[i-1] == str2[j-1]
-#         matrix[i][j] = matrix[i-1][j-1]
-#       else
-#         matrix[i][j] = 1 + min(matrix[i-1][j-1], matrix[i-1][j], matrix[i][j-1])
-#       end
-#     end
-#   end
-#
-#   return matrix[str1.length][str2.length]
-# end
+# Old unoptimized code
+
+def dynamicEditDistance(str1, str2)
+  matrix = Array.new(str1.length + 1) { Array.new(str2.length + 1) }
+
+  # Set up first row of matrix
+  (0...matrix[0].length).each do |i|
+    matrix[0][i] = i
+  end
+
+  # Set up first column of matrix
+  (0...matrix.length).each do |i|
+    matrix[i][0] = i
+  end
+
+  # Build the matrix
+  (1..str1.length).each do |i|
+    (1..str2.length).each do |j|
+      # If the current letters are the same, we take the old value
+      # since there is no edit distance. Otherwise, we take the minimum
+      # of the three values of substituion, deletion, or insertion
+      if str1[i-1] == str2[j-1]
+        matrix[i][j] = matrix[i-1][j-1]
+      else
+        matrix[i][j] = 1 + min(matrix[i-1][j-1], matrix[i-1][j], matrix[i][j-1])
+      end
+    end
+  end
+
+  return matrix[str1.length][str2.length]
+end
 
 # def findNetworkCount(target_word, dictionary_file)
 #   words = File.readlines(dictionary_file).map(&:chomp)

@@ -59,12 +59,16 @@ describe '#findNetworkCount' do
     expect(findNetworkCount("LISTY", 'very_small_test_dictionary.txt')).to eq(5)
   end
 
-  # it 'finds network size given quarter dictionary to be 31556' do
-  #   expect(findNetworkCount("LISTY", 'quarter_dictionary.txt')).to eq(31556)
-  # end
+  it 'finds network size given quarter dictionary to be 31556 (50 seconds)' do
+    expect(findNetworkCount("LISTY", 'quarter_dictionary.txt')).to eq(31556)
+  end
 
-  it 'finds network size given the full dictionary' do
-    expect(findNetworkCount("LISTY", 'dictionary.txt')).to eq(5)
+  it 'finds network size given the half dictionary 69347 (2 min 30 seconds)' do
+    expect(findNetworkCount("LISTY", 'half_dictionary.txt')).to eq(69347)
+  end
+
+  it 'finds network size given the full dictionary 69347 (2 min 30 seconds)' do
+    expect(findNetworkCount("LISTY", 'half_dictionary.txt')).to eq(5)
   end
 end
 
