@@ -52,7 +52,7 @@ def findNetworkCount(target_word, dictionary_file)
 
   while !queue.empty?
     current_word = queue.shift()
-    # Mark words seen as false and increment the network count
+    # Mark current word seen as false and increment the network count
     if word_hash[current_word]
       word_hash[current_word] = false
       count += 1
