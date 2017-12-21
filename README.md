@@ -1,7 +1,7 @@
 # listynetwork
 
 ## Running the tests
-In the root directory, type in:
+In the root directory, run:
 
 
 `bundle install`
