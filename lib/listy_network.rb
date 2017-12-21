@@ -37,27 +37,39 @@ end
 
 def findNetworkCount(target_word, dictionary_file)
   words = File.readlines(dictionary_file).map(&:chomp)
-  words.sort_by!(&:length)
 
+  # Create a word hash to keep track of words already seen
   word_hash = {}
   words.each do |word|
     word_hash[word] = true
   end
 
-  queue = []
-  queue.push(target_word)
+  # Start the queue with our target_word
+  queue = [target_word]
 
+  # Keep a counter for the network size
   count = 0
-  p "test"
+
   while !queue.empty?
     current_word = queue.shift()
-    words.each do |word|
-      if dynamicEditDistance(current_word, word) == 1 || current_word == word
-        if word_hash[word]
-          word_hash[word] = false
-          queue.push(word)
-          count += 1
-        end
+    # Mark words seen as false and increment the network count
+    if word_hash[current_word]
+      word_hash[current_word] = false
+      count += 1
+    else
+      # Skip it since we've seen the word already
+      next
+    end
+
+    # Iterate through the word hash and look only at the words
+    # that hasn't been seen yet
+    word_hash.each do |k, v|
+      next unless v
+      # Make sure that the word hasn't been seen yet then check
+      # the Levenshtein edit distance. If it's 1, push the word into
+      # the queue and continue checking
+      if word_hash[k] && (dynamicEditDistance(current_word, k) == 1)
+        queue.push(k)
       end
     end
   end
