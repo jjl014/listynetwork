@@ -35,7 +35,32 @@ def min(num1, num2, num3)
   return smallest < num3 ? smallest : num3
 end
 
-def findNetworkCount(word, dictionary_file)
-  lines = File.readlines(dictionary_file).map(&:chomp)
+def findNetworkCount(target_word, dictionary_file)
+  words = File.readlines(dictionary_file).map(&:chomp)
+  words.sort_by!(&:length)
 
+  word_hash = {}
+  words.each do |word|
+    word_hash[word] = true
+  end
+
+  queue = []
+  queue.push(target_word)
+
+  count = 0
+  p "test"
+  while !queue.empty?
+    current_word = queue.shift()
+    words.each do |word|
+      if dynamicEditDistance(current_word, word) == 1 || current_word == word
+        if word_hash[word]
+          word_hash[word] = false
+          queue.push(word)
+          count += 1
+        end
+      end
+    end
+  end
+
+  return count
 end
