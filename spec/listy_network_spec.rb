@@ -59,7 +59,46 @@ describe '#findNetworkCount' do
     expect(findNetworkCount("LISTY", 'very_small_test_dictionary.txt')).to eq(5)
   end
 
-  it 'finds network size given quarter dictionary' do
-    expect(findNetworkCount("LISTY", 'quarter_dictionary.txt')).to eq(5)
+  # it 'finds network size given quarter dictionary to be 31556' do
+  #   expect(findNetworkCount("LISTY", 'quarter_dictionary.txt')).to eq(31556)
+  # end
+
+  it 'finds network size given the full dictionary' do
+    expect(findNetworkCount("LISTY", 'dictionary.txt')).to eq(5)
+  end
+end
+
+describe 'TrieNode' do
+  let(:trie) { TrieNode.new }
+
+  it 'starts out empty' do
+    expect(trie.word).to be_nil
+    expect(trie.children.length).to eq(0)
+  end
+
+  it 'inserts a word into the trie' do
+    trie.insert("PIZZA")
+    node = trie
+    while node.children.length > 0
+      next_letter = node.children.keys[0]
+      node = node.children[next_letter]
+    end
+
+    expect(trie.children["P"]).to be_truthy
+    expect(node.word).to eq("PIZZA")
+  end
+end
+
+describe '#build_trie' do
+  it 'builds a trie with a given dictionary' do
+    trie = build_trie('dictionary.txt')
+    expect(trie.children.include?("F")).to be_truthy
+    expect(trie.children.include?("L")).to be_truthy
+  end
+end
+
+describe '#search' do
+  it 'searches the trie' do
+    trie = build_trie('very_small_test_dictionary.txt')
   end
 end
