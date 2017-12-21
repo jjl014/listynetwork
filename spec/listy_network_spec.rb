@@ -49,3 +49,9 @@ describe '#min' do
     end
   end
 end
+
+describe '#findNetworkCount' do
+  it 'returns something' do
+    expect(findNetworkCount("LISTY", 'very_small_test_dictionary.txt')).to eq(5)
+  end
+end

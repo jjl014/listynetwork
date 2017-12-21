@@ -34,3 +34,8 @@ def min(num1, num2, num3)
   smallest = num1 < num2 ? num1 : num2
   return smallest < num3 ? smallest : num3
 end
+
+def findNetworkCount(word, dictionary_file)
+  lines = File.readlines(dictionary_file).map(&:chomp)
+
+end
