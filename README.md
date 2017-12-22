@@ -15,4 +15,18 @@ In the root directory, run:
 ## Notes
 Using the bottom up implementation of Levenshtein's distance, I was able to get the network size of LISTY on the smaller dictionary files. However, when testing it against any of the larger dictionary files, it would run for a long long time. I think the bottleneck might be in the implementation of findNetworkCount where we keep computing the Levenshtein distance for each pair of words even though we might have already computed it before.
 
-Using the Trie implementation of Levenshtein's distance was much more efficient since we won't need to rebuild a whole table for every word. 
+Using the Trie implementation of Levenshtein's distance was much more efficient since we won't need to rebuild a whole table for every word we check. A set was also used to keep track of the words we have already visited. We then continuously search for friends, friends of friends, etc.. and increment a counter to keep track of the network size.
+
+Here are some run times with different dictionaries:
+
+very_small_test_dictionary: 5
+run time: 0.005s
+
+quarter_dictionary: 31556
+run time: 50s
+
+half_dictionary: 69347
+run time: 2m 30s
+
+full_dictionary: 176243
+run time: 9m
