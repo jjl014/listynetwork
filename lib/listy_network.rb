@@ -1,5 +1,8 @@
 require 'byebug'
 
+# The Trie data structure keeps track of a set of words. Each letter
+# is it's own node. Each node may branch off if there is a letter that
+# follows it.
 class TrieNode
   attr_accessor :word, :children
 
@@ -18,6 +21,9 @@ class TrieNode
   end
 end
 
+$set = Set.new
+
+# Builds trie using a dictionary file
 def build_trie(dictionary)
   trie = TrieNode.new
   File.readlines(dictionary).each do |word|
@@ -26,6 +32,7 @@ def build_trie(dictionary)
   trie
 end
 
+#
 def search(trie, word, maxCost)
   current_row = (0..word.length).to_a
   results = []
@@ -33,19 +40,22 @@ def search(trie, word, maxCost)
   trie.children.each_key do |key|
     search_trie(trie.children[key], key, word, current_row, results, maxCost)
   end
+
   return results
 end
 
+# Recursive search helper using Levenshtein's distance to find all
+# words that has an edit distance less than or equal to the maxCost.
 def search_trie(node, letter, word, previous_row, results, maxCost)
   columns = word.length
   current_row = [previous_row[0] + 1]
+
   1.upto(columns).each do |col|
     insertCost = current_row[col - 1] + 1
     deleteCost =  previous_row[col] + 1
     subCost = previous_row[col - 1]
 
     subCost += 1 unless word[col - 1] == letter
-
     current_row << [insertCost, deleteCost, subCost].min
   end
 
@@ -65,12 +75,15 @@ def min(num1, num2, num3)
   return smallest < num3 ? smallest : num3
 end
 
+
+# Find the network size of the target_word using the given dictionary
 def findNetworkCount(target_word, dictionary_file)
   trie = build_trie(dictionary_file)
-  $set = Set.new
   queue = [target_word]
-
   count = 0
+
+  # To keep track of all the words we've already visited
+  $set = Set.new
 
   while !queue.empty?
     count += 1
