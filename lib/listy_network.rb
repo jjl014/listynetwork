@@ -101,7 +101,8 @@ def findNetworkCount(target_word, dictionary_file)
   return count
 end
 
-##### Old unoptimized code #####
+# ======== IGNORE ======== #
+# Just old code. Keeping it for reference.
 
 def dynamicEditDistance(str1, str2)
   matrix = Array.new(str1.length + 1) { Array.new(str2.length + 1) }

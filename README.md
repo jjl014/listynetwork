@@ -3,7 +3,6 @@
 ## Running the tests
 In the root directory, run:
 
-
 `bundle install`
 
 `bundle exec rpsec spec`
@@ -19,14 +18,14 @@ Using the Trie implementation of Levenshtein's distance was much more efficient 
 
 Here are some run times with different dictionaries:
 
-very_small_test_dictionary: 5
-run time: 0.005s
+very small test dictionary: 5
+run time: ~0.0006s
 
-quarter_dictionary: 31556
-run time: 50s
+quarter dictionary: 31556
+run time: ~50s
 
-half_dictionary: 69347
-run time: 2m 30s
+half dictionary: 69347
+run time: ~2min 30s
 
-full_dictionary: 176243
-run time: 9m
+full dictionary: 176243
+run time: ~9min
