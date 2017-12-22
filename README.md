@@ -28,4 +28,4 @@ half dictionary: 69347
 run time: ~2min 30s
 
 full dictionary: 176243
-run time: ~9min
+run time: ~8min 50s

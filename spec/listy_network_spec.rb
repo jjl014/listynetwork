@@ -103,7 +103,7 @@ describe '#findNetworkCount' do
     expect(findNetworkCount("LISTY", 'half_dictionary.txt')).to eq(69347)
   end
 
-  it 'finds network size given the full dictionary 176243 (~9min)' do
+  it 'finds network size given the full dictionary 176243 (~8min 50s)' do
     expect(findNetworkCount("LISTY", 'dictionary.txt')).to eq(176243)
   end
 end
