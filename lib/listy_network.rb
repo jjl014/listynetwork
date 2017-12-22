@@ -21,8 +21,6 @@ class TrieNode
   end
 end
 
-$set = Set.new
-
 # Builds trie using a dictionary file
 def build_trie(dictionary)
   trie = TrieNode.new
@@ -32,7 +30,8 @@ def build_trie(dictionary)
   trie
 end
 
-#
+# Returns a list of all the words that has an edit distance of less than
+# or equal to the maxCost for the target word
 def search(trie, word, maxCost)
   current_row = (0..word.length).to_a
   results = []
@@ -50,6 +49,7 @@ def search_trie(node, letter, word, previous_row, results, maxCost)
   columns = word.length
   current_row = [previous_row[0] + 1]
 
+  # Build matrix row
   1.upto(columns).each do |col|
     insertCost = current_row[col - 1] + 1
     deleteCost =  previous_row[col] + 1
@@ -59,10 +59,14 @@ def search_trie(node, letter, word, previous_row, results, maxCost)
     current_row << [insertCost, deleteCost, subCost].min
   end
 
+  # If the last value in the row is less than or equal to the maxCost
+  # and there is a word in the node, add it to the result.
   if current_row.last <= maxCost && !node.word.nil?
-    results << node.word unless $set.include?(node.word)
+    results << node.word
   end
 
+  # If there is a value in the row that is less than or equal to the
+  # maxCost, recursively search the branches of the node.
   if current_row.min <= maxCost
     node.children.each_key do |key|
       search_trie(node.children[key], key, word, current_row, results, maxCost)
@@ -70,35 +74,34 @@ def search_trie(node, letter, word, previous_row, results, maxCost)
   end
 end
 
-def min(num1, num2, num3)
-  smallest = num1 < num2 ? num1 : num2
-  return smallest < num3 ? smallest : num3
-end
-
-
-# Find the network size of the target_word using the given dictionary
+# Find the network size of the target_word using the given dictionary.
 def findNetworkCount(target_word, dictionary_file)
   trie = build_trie(dictionary_file)
   queue = [target_word]
   count = 0
 
-  # To keep track of all the words we've already visited
-  $set = Set.new
+  # Use a set to keep track of all the words we've already visited.
+  set = Set.new
 
+  # Add current word to the visited set. Then search for words that
+  # has an edit distance of 1 and add them to the queue. Continue
+  # until queue is empty.
   while !queue.empty?
     count += 1
     current_word = queue.shift()
-    unless $set.include?(current_word)
-      $set.add(current_word)
+    unless set.include?(current_word)
+      set.add(current_word)
       res = search(trie, current_word, 1)
-      queue.concat(res)
+      res.each do |word|
+        queue << word unless set.include?(word)
+      end
     end
   end
 
   return count
 end
 
-# Old unoptimized code
+##### Old unoptimized code #####
 
 def dynamicEditDistance(str1, str2)
   matrix = Array.new(str1.length + 1) { Array.new(str2.length + 1) }
@@ -128,6 +131,11 @@ def dynamicEditDistance(str1, str2)
   end
 
   return matrix[str1.length][str2.length]
+end
+
+def min(num1, num2, num3)
+  smallest = num1 < num2 ? num1 : num2
+  return smallest < num3 ? smallest : num3
 end
 
 # def findNetworkCount(target_word, dictionary_file)
